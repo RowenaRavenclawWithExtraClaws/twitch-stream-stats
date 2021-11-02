@@ -1,4 +1,4 @@
-const { sort, calcMedian, filter } = require("./helpers/utility");
+const { sort, calcMedian, filter, slice } = require("./helpers/utility");
 
 const calcStreamsPerGame = (streamData) => {
   let gameStreamDict = {};
@@ -9,12 +9,11 @@ const calcStreamsPerGame = (streamData) => {
     else
       gameStreamDict[streamData[i].game_id] = {
         gameName: streamData[i].game_name,
-        streamTitle: streamData[i].title,
         streamCount: 1,
       };
   }
 
-  return gameStreamDict;
+  return Object.values(gameStreamDict);
 };
 
 const calcStreamsHighestViewersPerGame = (streamData) => {
@@ -40,7 +39,7 @@ const calcStreamsHighestViewersPerGame = (streamData) => {
       };
   }
 
-  return gameStreamDict;
+  return Object.values(gameStreamDict);
 };
 
 const calcMedianViewers = (streamData) => {
@@ -55,17 +54,21 @@ const calcMedianViewers = (streamData) => {
   return median;
 };
 
-const calcStreamsOddOrEvenViewerCount = (streamData) => {
+const calcStreamsOddViewerCount = (streamData) => {
   let oddStreams = filter(
     streamData,
     (stream) => stream.viewer_count % 2 !== 0
   );
+  return oddStreams;
+};
+
+const calcStreamsEvenViewerCount = (streamData) => {
   let evenStreams = filter(
     streamData,
     (stream) => stream.viewer_count % 2 === 0
   );
 
-  return { oddStreams: oddStreams, evenStreams: evenStreams };
+  return evenStreams;
 };
 
 const calcStreamsTop100 = (streamData, descending = false) => {
@@ -82,7 +85,7 @@ const calcStreamsTop100 = (streamData, descending = false) => {
     descending ? compareFuncDescending : compareFuncAscending
   );
 
-  return streamDataTemp.slice(0, 100);
+  return slice(streamDataTemp, 0, 100);
 };
 
 const calcStreamsSameViewerCount = (streamData) => {
@@ -96,11 +99,13 @@ const calcStreamsSameViewerCount = (streamData) => {
         viewerCount: streamData[i].viewer_count,
       });
     else
-      streamDict[streamData[i].viewer_count] = {
-        gameName: streamData[i].game_name,
-        streamTitle: streamData[i].title,
-        viewerCount: streamData[i].viewer_count,
-      };
+      streamDict[streamData[i].viewer_count] = [
+        {
+          gameName: streamData[i].game_name,
+          streamTitle: streamData[i].title,
+          viewerCount: streamData[i].viewer_count,
+        },
+      ];
   }
 
   let keysArr = Object.keys(streamDict);
@@ -111,14 +116,14 @@ const calcStreamsSameViewerCount = (streamData) => {
     if (streamDict[keysArr[i]].length === 1) delete streamDict[keysArr[i]];
   }
 
-  return streamDict;
+  return Object.values(streamDict);
 };
 
 module.exports.calcStreamsPerGame = calcStreamsPerGame;
 module.exports.calcStreamsHighestViewersPerGame =
   calcStreamsHighestViewersPerGame;
 module.exports.calcMedianViewers = calcMedianViewers;
-module.exports.calcStreamsOddOrEvenViewerCount =
-  calcStreamsOddOrEvenViewerCount;
+module.exports.calcStreamsOddViewerCount = calcStreamsOddViewerCount;
+module.exports.calcStreamsEvenViewerCount = calcStreamsEvenViewerCount;
 module.exports.calcStreamsTop100 = calcStreamsTop100;
 module.exports.calcStreamsSameViewerCount = calcStreamsSameViewerCount;
