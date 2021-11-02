@@ -121,8 +121,19 @@ const filter = (array, conditionFunc) => {
   return filteredArray;
 };
 
+const slice = (array, start, end) => {
+  let newArray = [];
+
+  for (let i = start; i < end && i < array.length; i++) {
+    newArray.push(array[i]);
+  }
+
+  return newArray;
+};
+
 module.exports.requestStreamData = requestStreamData;
 module.exports.shuffle = shuffle;
 module.exports.calcMedian = calcMedian;
 module.exports.filter = filter;
 module.exports.sort = sort;
+module.exports.slice = slice;
