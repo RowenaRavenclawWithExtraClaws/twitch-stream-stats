@@ -2,9 +2,10 @@ const {
   calcStreamsPerGame,
   calcStreamsHighestViewersPerGame,
   calcMedianViewers,
-  calcStreamsOddOrEvenViewerCount,
   calcStreamsTop100,
   calcStreamsSameViewerCount,
+  calcStreamsOddViewerCount,
+  calcStreamsEvenViewerCount,
 } = require("./features");
 const { pageCount } = require("./helpers/constants");
 const { requestStreamData, shuffle } = require("./helpers/utility");
@@ -32,8 +33,9 @@ class Streams {
 
   getMedianViewers = () => calcMedianViewers(this.streamData);
 
-  getStreamsOddOrEvenViewerCount = () =>
-    calcStreamsOddOrEvenViewerCount(this.streamData);
+  getStreamsOddViewerCount = () => calcStreamsOddViewerCount(this.streamData);
+
+  getStreamsEvenViewerCount = () => calcStreamsEvenViewerCount(this.streamData);
 
   getTopStreams = () => calcStreamsTop100(this.streamData, true);
 
@@ -42,8 +44,4 @@ class Streams {
 
 let streams = new Streams();
 
-const populateAndShow = async () => {
-  await streams.populateStreamData();
-};
-
-populateAndShow();
+module.exports.streams = streams;
