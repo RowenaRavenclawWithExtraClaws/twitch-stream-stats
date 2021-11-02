@@ -13,5 +13,9 @@
     "Twitch"
   ],
   "author": "Abdelrahman Abdelsalam",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "restify": "^8.6.0"
+  }
 }
