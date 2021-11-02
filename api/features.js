@@ -9,6 +9,7 @@ const calcStreamsPerGame = (streamData) => {
     else
       gameStreamDict[streamData[i].game_id] = {
         gameName: streamData[i].game_name,
+        streamTitle: streamData[i].title,
         streamCount: 1,
       };
   }
@@ -112,3 +113,12 @@ const calcStreamsSameViewerCount = (streamData) => {
 
   return streamDict;
 };
+
+module.exports.calcStreamsPerGame = calcStreamsPerGame;
+module.exports.calcStreamsHighestViewersPerGame =
+  calcStreamsHighestViewersPerGame;
+module.exports.calcMedianViewers = calcMedianViewers;
+module.exports.calcStreamsOddOrEvenViewerCount =
+  calcStreamsOddOrEvenViewerCount;
+module.exports.calcStreamsTop100 = calcStreamsTop100;
+module.exports.calcStreamsSameViewerCount = calcStreamsSameViewerCount;
