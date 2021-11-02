@@ -66,3 +66,49 @@ const calcStreamsOddOrEvenViewerCount = (streamData) => {
 
   return { oddStreams: oddStreams, evenStreams: evenStreams };
 };
+
+const calcStreamsTop100 = (streamData, descending = false) => {
+  let streamDataTemp = streamData;
+
+  const compareFuncDescending = (stream1, stream2) =>
+    stream1.viewer_count >= stream2.viewer_count;
+
+  const compareFuncAscending = (stream1, stream2) =>
+    stream1.viewer_count <= stream2.viewer_count;
+
+  sort(
+    streamDataTemp,
+    descending ? compareFuncDescending : compareFuncAscending
+  );
+
+  return streamDataTemp.slice(0, 100);
+};
+
+const calcStreamsSameViewerCount = (streamData) => {
+  let streamDict = {};
+
+  for (let i = 0; i < streamData.length; i++) {
+    if (streamDict[streamData[i].viewer_count])
+      streamDict[streamData[i].viewer_count].push({
+        gameName: streamData[i].game_name,
+        streamTitle: streamData[i].title,
+        viewerCount: streamData[i].viewer_count,
+      });
+    else
+      gameStreamDict[streamData[i].viewer_count] = {
+        gameName: streamData[i].game_name,
+        streamTitle: streamData[i].title,
+        viewerCount: streamData[i].viewer_count,
+      };
+  }
+
+  let keysArr = Object.keys(streamDict);
+
+  if (keysArr.length === streamData.length) return {};
+
+  for (let i = 0; i < keysArr.length; i++) {
+    if (streamDict[keysArr[i]].length === 1) delete streamDict[keysArr[i]];
+  }
+
+  return streamDict;
+};
