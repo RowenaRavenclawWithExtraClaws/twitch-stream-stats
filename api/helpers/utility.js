@@ -29,7 +29,7 @@ const requestStreamData = async (cursor) => {
 // Fisher-Yates Algorithm
 const shuffle = (array) => {
   let randomIndex;
-  let currentIndex = array.length;
+  let currentIndex = array.length - 1;
 
   while (currentIndex != 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
@@ -39,7 +39,7 @@ const shuffle = (array) => {
       array[currentIndex],
     ];
 
-    currentIndex--;
+    currentIndex -= 1;
   }
 
   return array;
