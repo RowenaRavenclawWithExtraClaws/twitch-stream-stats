@@ -45,33 +45,61 @@ const shuffle = (array) => {
   return array;
 };
 
-const partition = (start, end, array) => {
-  let pivotIndex = start;
-  let pivot = array[pivotIndex];
+const merge = (arr, left, middle, right, compareFunc) => {
+  let leftLength = middle - left + 1;
+  let rightLength = right - middle;
+  let Left = new Array(leftLength);
+  let Right = new Array(rightLength);
+  let i = 0;
+  let j = 0;
+  let k = left;
 
-  while (start < end) {
-    while (start < array.length && array[start] <= pivot) start += 1;
+  for (let i = 0; i < leftLength; i++) Left[i] = arr[left + i];
 
-    while (array[end] > pivot) end -= 1;
+  for (let j = 0; j < rightLength; j++) Right[j] = arr[middle + 1 + j];
 
-    if (start < end) [array[start], array[end]] = [array[end], array[start]];
+  while (i < leftLength && j < rightLength) {
+    if (compareFunc(Left[i], Right[j])) {
+      arr[k] = Left[i];
+      i++;
+    } else {
+      arr[k] = Right[j];
+      j++;
+    }
+    k++;
   }
 
-  [array[end], array[pivotIndex]] = [array[pivotIndex], array[end]];
+  while (i < leftLength) {
+    arr[k] = Left[i];
+    i++;
+    k++;
+  }
 
-  return end;
-};
-
-const quickSort = (start, end, array) => {
-  if (start < end) {
-    let pivot = partition(start, end, array);
-
-    quickSort(start, pivot - 1, array);
-    quickSort(pivot + 1, end, array);
+  while (j < rightLength) {
+    arr[k] = Right[j];
+    j++;
+    k++;
   }
 };
 
-const sort = (array) => quickSort(0, array.length - 1, array);
+const mergeSort = (
+  arr,
+  left,
+  right,
+  compareFunc = (item1, item2) => item1 <= item2
+) => {
+  if (left >= right) return;
+
+  let middle = left + parseInt((right - left) / 2);
+
+  mergeSort(arr, left, middle, compareFunc);
+  mergeSort(arr, middle + 1, right, compareFunc);
+
+  merge(arr, left, middle, right, compareFunc);
+};
+
+const sort = (array, compareFunc) =>
+  mergeSort(array, 0, array.length - 1, compareFunc);
 
 const calcMedian = (array) => {
   sort(array);
@@ -97,3 +125,4 @@ module.exports.requestStreamData = requestStreamData;
 module.exports.shuffle = shuffle;
 module.exports.calcMedian = calcMedian;
 module.exports.filter = filter;
+module.exports.sort = sort;
