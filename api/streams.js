@@ -17,7 +17,12 @@ class Streams {
     }
   };
 
-  getStreamData = () => this.streamData;
+  getStreamsPerGame = () => {};
+  getStreamsHighestViewersPerGame = () => {};
+  medianViewers = () => {};
+  getStreamsOddOrEvenViewerCount = () => {};
+  getTopStreams = () => {};
+  getStreamsSameViewerCount = () => {};
 }
 
 let streams = new Streams();
@@ -27,3 +32,5 @@ const populateAndShow = async () => {
 
   // do operations
 };
+
+populateAndShow();
