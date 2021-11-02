@@ -22,7 +22,6 @@ class Streams {
       this.streamData.push(...shuffle(responseInfo.body));
       cursor = responseInfo.cursor;
       requestCount += 1;
-      break;
     }
   };
 
@@ -31,7 +30,7 @@ class Streams {
   getStreamsHighestViewersPerGame = () =>
     calcStreamsHighestViewersPerGame(this.streamData);
 
-  medianViewers = () => calcMedianViewers(this.streamData);
+  getMedianViewers = () => calcMedianViewers(this.streamData);
 
   getStreamsOddOrEvenViewerCount = () =>
     calcStreamsOddOrEvenViewerCount(this.streamData);
@@ -45,8 +44,6 @@ let streams = new Streams();
 
 const populateAndShow = async () => {
   await streams.populateStreamData();
-
-  console.log(streams.getStreamsPerGame());
 };
 
 populateAndShow();
