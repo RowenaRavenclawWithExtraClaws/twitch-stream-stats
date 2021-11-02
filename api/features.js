@@ -96,7 +96,7 @@ const calcStreamsSameViewerCount = (streamData) => {
         viewerCount: streamData[i].viewer_count,
       });
     else
-      gameStreamDict[streamData[i].viewer_count] = {
+      streamDict[streamData[i].viewer_count] = {
         gameName: streamData[i].game_name,
         streamTitle: streamData[i].title,
         viewerCount: streamData[i].viewer_count,
