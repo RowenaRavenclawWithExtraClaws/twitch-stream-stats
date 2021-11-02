@@ -1,0 +1,17 @@
+{
+  "name": "streams-stat-api",
+  "version": "1.0.0",
+  "description": "pulling twitch streaming data and doing some operations",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node",
+    "API",
+    "Postgres",
+    "Twitch"
+  ],
+  "author": "Abdelrahman Abdelsalam",
+  "license": "ISC"
+}
