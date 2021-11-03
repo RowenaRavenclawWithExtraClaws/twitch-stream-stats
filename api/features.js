@@ -47,7 +47,7 @@ const calcMedianViewers = (streamData) => {
   let median;
 
   for (let i = 0; i < streamData.length; i++)
-    viewerCounts.push(streamData[i].viewer_count);
+    viewerCounts.push({ viewer_count: streamData[i].viewer_count });
 
   median = calcMedian(viewerCounts);
 
