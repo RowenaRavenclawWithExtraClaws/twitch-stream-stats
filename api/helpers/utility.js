@@ -104,13 +104,16 @@ const sort = (array, compareFunc) =>
   mergeSort(array, 0, array.length - 1, compareFunc);
 
 const calcMedian = (array) => {
-  sort(array);
+  sort(
+    array,
+    (stream1, stream2) => stream1.viewer_count < stream2.viewer_count
+  );
 
-  const center = array[Math.floor(array.length / 2)];
+  const center = array[Math.floor(array.length / 2)].viewer_count;
 
   if (array.length % 2 === 1) return center;
 
-  return (center + array[Math.floor(array.length / 2) - 1]) / 2;
+  return (center + array[Math.floor(array.length / 2) - 1].viewer_count) / 2;
 };
 
 const filter = (array, conditionFunc) => {
