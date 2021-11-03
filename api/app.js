@@ -2,8 +2,15 @@ const restify = require("restify");
 const cron = require("node-cron");
 const { port } = require("./helpers/constants");
 const { endpointHandler } = require("./helpers/endpointHandler");
-const { seed } = require("./prisma/queries");
 const { streams } = require("./streams");
+const {
+  seed,
+  getMedianViewerCount,
+  getStreamsOddViewerCount,
+  getStreamsEvenViewerCount,
+  getStreamsTop100,
+  getStreamsPerGame,
+} = require("./prisma/queries");
 
 const runApp = async () => {
   await streams.populateStreamData();
@@ -24,31 +31,41 @@ const runApp = async () => {
   server.use(restify.plugins.bodyParser());
 
   server.get("/streams/per-game", (req, res) =>
-    endpointHandler(req, res, streams.getStreamsPerGame)
+    endpointHandler(req, res, getStreamsPerGame, streams.getStreamsPerGame)
   );
 
   server.get("/streams/highest-viewers", (req, res) =>
-    endpointHandler(req, res, streams.getStreamsHighestViewersPerGame)
+    endpointHandler(req, res, () => {}, streams.getStreamsHighestViewersPerGame)
   );
 
   server.get("/streams/median-viewers", (req, res) =>
-    endpointHandler(req, res, streams.getMedianViewers)
+    endpointHandler(req, res, getMedianViewerCount, streams.getMedianViewers)
   );
 
   server.get("/streams/odd-viewers", (req, res) =>
-    endpointHandler(req, res, streams.getStreamsOddViewerCount)
+    endpointHandler(
+      req,
+      res,
+      getStreamsOddViewerCount,
+      streams.getStreamsOddViewerCount
+    )
   );
 
   server.get("/streams/even-viewers", (req, res) =>
-    endpointHandler(req, res, streams.getStreamsEvenViewerCount)
+    endpointHandler(
+      req,
+      res,
+      getStreamsEvenViewerCount,
+      streams.getStreamsEvenViewerCount
+    )
   );
 
   server.get("/streams/top100", (req, res) =>
-    endpointHandler(req, res, streams.getTopStreams)
+    endpointHandler(req, res, getStreamsTop100, streams.getTopStreams)
   );
 
   server.get("/streams/same-viewers", (req, res) =>
-    endpointHandler(req, res, streams.getStreamsSameViewerCount)
+    endpointHandler(req, res, () => {}, streams.getStreamsSameViewerCount)
   );
 
   server.listen(port, function () {
