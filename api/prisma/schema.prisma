@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model streams {
+  id            String   @id
+  user_id       String
+  user_login    String
+  user_name     String
+  game_id       String
+  game_name     String
+  type          String
+  title         String
+  viewer_count  Int
+  started_at    DateTime @db.Date
+  language      String   @db.VarChar(3)
+  thumbnail_url String   @unique(map: "thumbnail")
+  tag_ids       String[]
+  is_mature     Boolean
+}
