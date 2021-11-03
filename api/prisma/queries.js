@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { webappResultsPerPage } = require("../helpers/constants");
 const { calcMedian } = require("../helpers/utility");
 
 const prisma = new PrismaClient();
@@ -27,6 +28,26 @@ const seed = async (streamData) => {
   }
 };
 
+const getStreamsPerGame = async (page) => {
+  let result = { data: [], recordCount: 0 };
+  const offset = (page - 1) * webappResultsPerPage;
+
+  try {
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT (*) FROM 
+                             (SELECT COUNT (*) FROM streams.streams 
+                             GROUP BY game_id) AS streamspergame;`;
+
+    result.data =
+      await prisma.$queryRaw`SELECT game_name, COUNT(*) as stream_count FROM streams.streams
+                             GROUP BY game_id, game_name
+                             limit ${webappResultsPerPage} offset ${offset}`;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return result;
+  }
+};
+
 const getMedianViewerCount = async () => {
   let result = -1;
 
@@ -37,8 +58,6 @@ const getMedianViewerCount = async () => {
         select: { viewer_count: true },
       })
     );
-
-    console.log(result);
   } catch (error) {
     console.log(error);
   } finally {
@@ -46,12 +65,17 @@ const getMedianViewerCount = async () => {
   }
 };
 
-const getStreamsEvenViewerCount = async () => {
-  let result = [];
+const getStreamsEvenViewerCount = async (page) => {
+  let result = { data: [], recordCount: 0 };
+  const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result =
-      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 = 0`;
+    result.recordCount =
+      await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 = 0`;
+
+    result.data =
+      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 = 0
+                             limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -59,12 +83,17 @@ const getStreamsEvenViewerCount = async () => {
   }
 };
 
-const getStreamsOddViewerCount = async () => {
-  let result = [];
+const getStreamsOddViewerCount = async (page) => {
+  let result = { data: [], recordCount: [] };
+  const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result =
-      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 != 0`;
+    result.recordCount =
+      await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 != 0`;
+
+    result.data =
+      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 != 0
+                             limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -72,13 +101,15 @@ const getStreamsOddViewerCount = async () => {
   }
 };
 
-const getStreamsTop100 = async () => {
-  let result = [];
+const getStreamsTop100 = async (page) => {
+  let result = { data: [], recordCount: 100 };
+  const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result = await prisma.streams.findMany({
+    result.data = await prisma.streams.findMany({
       orderBy: { viewer_count: "desc" },
-      take: 100,
+      take: webappResultsPerPage,
+      skip: offset,
     });
   } catch (error) {
     console.log(error);
@@ -88,6 +119,7 @@ const getStreamsTop100 = async () => {
 };
 
 module.exports.seed = seed;
+module.exports.getStreamsPerGame = getStreamsPerGame;
 module.exports.getStreamsEvenViewerCount = getStreamsEvenViewerCount;
 module.exports.getStreamsOddViewerCount = getStreamsOddViewerCount;
 module.exports.getMedianViewerCount = getMedianViewerCount;
