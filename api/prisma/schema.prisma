@@ -18,7 +18,7 @@ model streams {
   title         String
   viewer_count  Int
   started_at    DateTime @db.Date
-  language      String   @db.VarChar(3)
+  language      String
   thumbnail_url String   @unique(map: "thumbnail")
   tag_ids       String[]
   is_mature     Boolean
