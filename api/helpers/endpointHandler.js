@@ -1,8 +1,8 @@
 const { webappResultsPerPage } = require("./constants");
 const { slice } = require("./utility");
 
-const endpointHandler = (req, res, featureFunc) => {
-  let result = featureFunc();
+const endpointHandler = async (req, res, featureFunc) => {
+  let result = await featureFunc();
 
   if (req.query.page) {
     let pageCount = Math.ceil(result.length / webappResultsPerPage);
