@@ -19,10 +19,12 @@ const requestStreamData = async (cursor) => {
     }
   );
 
+  const resBody = JSON.parse(response.body);
+
   return {
     statusCode: response.statusCode,
-    body: JSON.parse(response.body).data,
-    cursor: response.cursor,
+    body: resBody.data,
+    cursor: resBody.pagination.cursor,
   };
 };
 
