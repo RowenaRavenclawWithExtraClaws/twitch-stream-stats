@@ -1,10 +1,18 @@
 const restify = require("restify");
+const cron = require("node-cron");
 const { port } = require("./helpers/constants");
 const { endpointHandler } = require("./helpers/endpointHandler");
+const { seed } = require("./prisma/queries");
 const { streams } = require("./streams");
 
 const runApp = async () => {
   await streams.populateStreamData();
+  await seed(streams.getStreamData());
+
+  cron.schedule("15 * * * * ", async () => {
+    await streams.populateStreamData();
+    await seed(streams.getStreamData());
+  });
 
   const server = restify.createServer({
     name: "top-streams-stats",
