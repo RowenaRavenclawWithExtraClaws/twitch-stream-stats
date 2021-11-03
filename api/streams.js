@@ -17,14 +17,20 @@ class Streams {
     let requestCount = 0;
     let cursor = null;
 
+    this.streamData = [];
+
     while (requestCount < pageCount) {
       const responseInfo = await requestStreamData(cursor);
 
-      this.streamData.push(...shuffle(responseInfo.body));
+      this.streamData.push(...responseInfo.body);
       cursor = responseInfo.cursor;
       requestCount += 1;
     }
+
+    this.streamData = shuffle(this.streamData);
   };
+
+  getStreamData = () => this.streamData;
 
   getStreamsPerGame = () => calcStreamsPerGame(this.streamData);
 
