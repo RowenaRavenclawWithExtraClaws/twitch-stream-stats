@@ -1,9 +1,9 @@
 import { Pagination, Stack } from "@mui/material";
 
-const CustomPagination = () => {
+const CustomPagination = (props: { pageCount: number }) => {
   return (
     <Stack spacing={2} style={{ marginTop: 20 }}>
-      <Pagination count={10} shape="rounded" />
+      <Pagination count={props.pageCount} shape="rounded" />
     </Stack>
   );
 };
