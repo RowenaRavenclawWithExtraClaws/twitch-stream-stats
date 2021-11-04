@@ -19,7 +19,7 @@ const StatsCard = (props: {
   pageCount: number;
 }) => {
   return (
-    <Card style={{ marginTop: 20 }}>
+    <Card sx={{ minWidth: 400 }} style={{ marginTop: 20 }}>
       <CardContent>
         <div>
           <Typography variant="h6" component="div">

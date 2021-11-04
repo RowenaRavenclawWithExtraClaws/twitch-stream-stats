@@ -11,6 +11,7 @@ import { selectStreamsOddViewers } from "../redux/streamsOddViewersSlice";
 import { selectStreamsEvenViewers } from "../redux/streamsEvenViewersSlice";
 import { selectStreamsTop100 } from "../redux/streamsTop100Slice";
 import { selectStreamsSameViewers } from "../redux/streamsSameViewersSlice";
+import ProfileMenu from "../components/profileMenu";
 
 const Home: NextPage = () => {
   const streamsPerGame = useSelector(selectStreamsPerGame);
@@ -57,7 +58,10 @@ const Home: NextPage = () => {
     <Container maxWidth="xl" className={styles.container}>
       <CustomHeader title="Stream Stats" />
       <main className={styles.main}>
-        <h1 className={styles.title}>Stream Insights</h1>
+        <div style={{ width: "100%" }}>
+          <h1 className={styles.title}>Stream Insights</h1>
+          <ProfileMenu />
+        </div>
         <Grid container spacing={2}>
           {stats.map((info, indx) => (
             <Grid key={indx} item lg={4}>
