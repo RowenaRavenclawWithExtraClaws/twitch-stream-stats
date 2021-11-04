@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Button } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { Icon } from "@iconify/react";
 import CustomFooter from "../components/customFooter";
 import CustomHeader from "../components/customHeader";
@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css";
 
 const Signin: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <Container className={styles.container}>
       <CustomHeader title="Stream Stats | Sign in" />
 
       <main className={styles.main}>
@@ -28,7 +28,7 @@ const Signin: NextPage = () => {
       </main>
 
       <CustomFooter />
-    </div>
+    </Container>
   );
 };
 
