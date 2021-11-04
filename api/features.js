@@ -5,11 +5,11 @@ const calcStreamsPerGame = (streamData) => {
 
   for (let i = 0; i < streamData.length; i++) {
     if (gameStreamDict[streamData[i].game_id])
-      gameStreamDict[streamData[i].game_id].streamCount += 1;
+      gameStreamDict[streamData[i].game_id].stream_count += 1;
     else
       gameStreamDict[streamData[i].game_id] = {
-        gameName: streamData[i].game_name,
-        streamCount: 1,
+        game_name: streamData[i].game_name,
+        stream_count: 1,
       };
   }
 
@@ -23,19 +23,20 @@ const calcStreamsHighestViewersPerGame = (streamData) => {
     if (gameStreamDict[streamData[i].game_id]) {
       if (
         streamData[i].viewer_count >
-        gameStreamDict[streamData[i].game_id].viewerCount
+        gameStreamDict[streamData[i].game_id].viewer_count
       ) {
-        gameStreamDict[streamData[i].game_id].gameName =
+        gameStreamDict[streamData[i].game_id].game_name =
           streamData[i].game_name;
-        gameStreamDict[streamData[i].game_id].streamTitle = streamData[i].title;
-        gameStreamDict[streamData[i].game_id].viewerCount =
+        gameStreamDict[streamData[i].game_id].stream_title =
+          streamData[i].title;
+        gameStreamDict[streamData[i].game_id].viewer_count =
           streamData[i].viewer_count;
       }
     } else
       gameStreamDict[streamData[i].game_id] = {
-        gameName: streamData[i].game_name,
-        streamTitle: streamData[i].title,
-        viewerCount: streamData[i].viewer_count,
+        game_name: streamData[i].game_name,
+        stream_title: streamData[i].title,
+        viewer_count: streamData[i].viewer_count,
       };
   }
 
@@ -94,16 +95,16 @@ const calcStreamsSameViewerCount = (streamData) => {
   for (let i = 0; i < streamData.length; i++) {
     if (streamDict[streamData[i].viewer_count])
       streamDict[streamData[i].viewer_count].push({
-        gameName: streamData[i].game_name,
-        streamTitle: streamData[i].title,
-        viewerCount: streamData[i].viewer_count,
+        game_name: streamData[i].game_name,
+        stream_title: streamData[i].title,
+        viewer_count: streamData[i].viewer_count,
       });
     else
       streamDict[streamData[i].viewer_count] = [
         {
-          gameName: streamData[i].game_name,
-          streamTitle: streamData[i].title,
-          viewerCount: streamData[i].viewer_count,
+          game_name: streamData[i].game_name,
+          stream_title: streamData[i].title,
+          viewer_count: streamData[i].viewer_count,
         },
       ];
   }
