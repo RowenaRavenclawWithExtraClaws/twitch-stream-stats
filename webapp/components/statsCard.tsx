@@ -9,14 +9,19 @@ import {
   TableBody,
   Table,
 } from "@mui/material";
+import CustomMenue from "./customMenu";
+import CustomPagination from "./customPagination";
 
 const StatsCard = (props: { title: string; data: Array<object> }) => {
   return (
     <Card style={{ marginTop: 20 }}>
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
-          {props.title}
-        </Typography>
+        <div>
+          <Typography variant="h6" component="div">
+            {props.title}
+          </Typography>
+          <CustomMenue />
+        </div>
         <TableContainer>
           <Table size="small" aria-label="simple table">
             <TableHead>
@@ -39,6 +44,7 @@ const StatsCard = (props: { title: string; data: Array<object> }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <CustomPagination />
       </CardContent>
     </Card>
   );
