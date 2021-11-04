@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    streams: {},
+    streams: { data: [], page_count: 1 },
   },
 };
 
 export const streamsSameViewersSlice = createSlice({
-  name: "streamssameviewers",
+  name: "streamsSameViewers",
   initialState,
   reducers: {
     setStreamsSameViewersSlice: (state, action) => {
@@ -19,6 +19,6 @@ export const streamsSameViewersSlice = createSlice({
 export const { setStreamsSameViewersSlice } = streamsSameViewersSlice.actions;
 
 export const selectStreamsSameViewers = (state) =>
-  state.streamssameviewers.value.streams;
+  state.streamsSameViewers.value.streams;
 
 export default streamsSameViewersSlice.reducer;

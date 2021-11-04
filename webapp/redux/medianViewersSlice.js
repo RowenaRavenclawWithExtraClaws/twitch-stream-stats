@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const medianViewersSlice = createSlice({
-  name: "median",
+  name: "medianViewers",
   initialState,
   reducers: {
     setMedianViewers: (state, action) => {
@@ -18,6 +18,6 @@ export const medianViewersSlice = createSlice({
 
 export const { setMedianViewers } = medianViewersSlice.actions;
 
-export const selectMedianViewers = (state) => state.median.value.median;
+export const selectMedianViewers = (state) => state.medianViewers.value.median;
 
 export default medianViewersSlice.reducer;

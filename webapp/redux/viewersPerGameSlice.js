@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    streams: {},
+    streams: { data: [], page_count: 11 },
   },
 };
 
 export const viewersPerGameSlice = createSlice({
-  name: "streamsviews",
+  name: "viewersPerGame",
   initialState,
   reducers: {
     setViewersPerGame: (state, action) => {
@@ -18,6 +18,7 @@ export const viewersPerGameSlice = createSlice({
 
 export const { setViewersPerGame } = viewersPerGameSlice.actions;
 
-export const selectViewersPerGame = (state) => state.streamsviews.value.streams;
+export const selectViewersPerGame = (state) =>
+  state.viewersPerGame.value.streams;
 
 export default viewersPerGameSlice.reducer;

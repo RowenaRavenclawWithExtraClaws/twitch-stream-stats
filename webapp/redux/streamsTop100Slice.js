@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
-    streams: {},
+    streams: { data: [], page_count: 6 },
   },
 };
 
 export const streamsTop100Slice = createSlice({
-  name: "streamstop",
+  name: "streamsTop100",
   initialState,
   reducers: {
     setStreamsTop100: (state, action) => {
@@ -18,6 +18,6 @@ export const streamsTop100Slice = createSlice({
 
 export const { setStreamsTop100 } = streamsTop100Slice.actions;
 
-export const selectStreamsTop100 = (state) => state.streamstop.value.streams;
+export const selectStreamsTop100 = (state) => state.streamsTop100.value.streams;
 
 export default streamsTop100Slice.reducer;
