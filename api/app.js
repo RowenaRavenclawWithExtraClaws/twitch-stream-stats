@@ -1,5 +1,6 @@
 const restify = require("restify");
 const cron = require("node-cron");
+const cors = require("cors");
 const { port } = require("./helpers/constants");
 const { endpointHandler } = require("./helpers/endpointHandler");
 const { streams } = require("./streams");
@@ -28,6 +29,7 @@ const runApp = async () => {
     version: "1.0.0",
   });
 
+  server.use(cors());
   server.use(restify.plugins.acceptParser(server.acceptable));
   server.use(restify.plugins.queryParser());
   server.use(restify.plugins.bodyParser());
