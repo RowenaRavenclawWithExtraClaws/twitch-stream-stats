@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { NextPage } from "next";
 import { Grid, Container } from "@mui/material";
 import CustomFooter from "../components/customFooter";
 import CustomHeader from "../components/customHeader";
 import styles from "../styles/Home.module.css";
 import StatsCard from "../components/statsCard";
-import { useSelector } from "react-redux";
 import { selectStreamsPerGame } from "../redux/streamsPerGameSlice";
 import { selectViewersPerGame } from "../redux/viewersPerGameSlice";
 import { selectStreamsOddViewers } from "../redux/streamsOddViewersSlice";
@@ -12,6 +13,8 @@ import { selectStreamsEvenViewers } from "../redux/streamsEvenViewersSlice";
 import { selectStreamsTop100 } from "../redux/streamsTop100Slice";
 import { selectStreamsSameViewers } from "../redux/streamsSameViewersSlice";
 import ProfileMenu from "../components/profileMenu";
+import { customFetch, endpoints } from "../utility";
+import FetchIndicator from "../components/fetchIndicator";
 
 const Home: NextPage = () => {
   const streamsPerGame = useSelector(selectStreamsPerGame);
@@ -20,6 +23,19 @@ const Home: NextPage = () => {
   const streamsEvenViewers = useSelector(selectStreamsEvenViewers);
   const streamsTop100 = useSelector(selectStreamsTop100);
   const streamsSameViewers = useSelector(selectStreamsSameViewers);
+
+  const [fetching, toggleFetching] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    Promise.all(
+      endpoints.map((endpoint) =>
+        customFetch(endpoint.endpoint, { page: 1 }, (body) =>
+          dispatch(endpoint.setter(body))
+        )
+      )
+    ).then(() => toggleFetching(false));
+  }, []);
 
   const stats = [
     {
@@ -54,6 +70,8 @@ const Home: NextPage = () => {
     },
   ];
 
+  if (fetching) return <FetchIndicator />;
+
   return (
     <Container maxWidth="xl" className={styles.container}>
       <CustomHeader title="Stream Stats" />
@@ -64,7 +82,7 @@ const Home: NextPage = () => {
         </div>
         <Grid container spacing={2}>
           {stats.map((info, indx) => (
-            <Grid key={indx} item lg={4}>
+            <Grid key={indx} item lg={6}>
               <StatsCard
                 title={info.title}
                 data={info.data}
