@@ -10,13 +10,13 @@ export const streamsEvenViewersSlice = createSlice({
   name: "streamsEvenViewers",
   initialState,
   reducers: {
-    setStreamsEvenViewersSlice: (state, action) => {
+    setStreamsEvenViewers: (state, action) => {
       state.value.streams = action.payload;
     },
   },
 });
 
-export const { setStreamsEvenViewersSlice } = streamsEvenViewersSlice.actions;
+export const { setStreamsEvenViewers } = streamsEvenViewersSlice.actions;
 
 export const selectStreamsEvenViewers = (state) =>
   state.streamsEvenViewers.value.streams;

@@ -10,13 +10,13 @@ export const streamsOddViewersSlice = createSlice({
   name: "streamsOddViewers",
   initialState,
   reducers: {
-    setStreamsOddViewersSlice: (state, action) => {
+    setStreamsOddViewers: (state, action) => {
       state.value.streams = action.payload;
     },
   },
 });
 
-export const { setStreamsOddViewersSlice } = streamsOddViewersSlice.actions;
+export const { setStreamsOddViewers } = streamsOddViewersSlice.actions;
 
 export const selectStreamsOddViewers = (state) =>
   state.streamsOddViewers.value.streams;
