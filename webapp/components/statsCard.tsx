@@ -46,7 +46,18 @@ const StatsCard = (props: {
                   {props.data.map((info, indx1) => (
                     <TableRow key={indx1}>
                       {Object.values(info).map((val, indx2) => (
-                        <TableCell key={indx2}>{val}</TableCell>
+                        <TableCell
+                          key={indx2}
+                          title={val}
+                          sx={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: 150,
+                          }}
+                        >
+                          {val}
+                        </TableCell>
                       ))}
                     </TableRow>
                   ))}
