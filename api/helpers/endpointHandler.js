@@ -21,7 +21,7 @@ const executeDatabaseFeature = async (req, res, databaseFeatureFunc) => {
       result.recordCount[0].count / webappResultsPerPage
     );
 
-    res.send({ pageCount: pageCount, data: result.data });
+    res.send({ page_count: pageCount, data: result.data });
   } else {
     result = await databaseFeatureFunc();
 
@@ -41,7 +41,7 @@ const executeInMemoryFeature = async (req, res, inMemoryFeatureFunc) => {
       webappResultsPerPage * parseInt(req.query.page)
     );
 
-    res.send({ pageCount: pageCount, data: result });
+    res.send({ page_count: pageCount, data: result });
   } else res.send({ data: result });
 };
 

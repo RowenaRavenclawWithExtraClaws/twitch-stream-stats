@@ -48,6 +48,28 @@ const getStreamsPerGame = async (page) => {
   }
 };
 
+const getStreamsHighestViewersPerGame = async (page) => {
+  let result = { data: [], recordCount: 0 };
+  const offset = (page - 1) * webappResultsPerPage;
+
+  try {
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT(*) FROM
+    (SELECT game_name, title, temp.viewer_count FROM streams.streams temp INNER JOIN
+    (SELECT game_id, MAX(viewer_count) as viewer_count FROM streams.streams group by game_id) AS lookup
+    ON lookup.game_id = temp.game_id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
+
+    result.data =
+      await prisma.$queryRaw`SELECT game_name, title, temp.viewer_count FROM streams.streams temp INNER JOIN
+      (SELECT game_id, MAX(viewer_count) as viewer_count FROM streams.streams group by game_id) AS lookup
+      ON lookup.game_id = temp.game_id AND lookup.viewer_count = temp.viewer_count
+      limit ${webappResultsPerPage} offset ${offset}`;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return result;
+  }
+};
+
 const getMedianViewerCount = async () => {
   let result = -1;
 
@@ -118,9 +140,34 @@ const getStreamsTop100 = async (page) => {
   }
 };
 
+const getStreamsSameViewers = async (page) => {
+  let result = { data: [], recordCount: 0 };
+  const offset = (page - 1) * webappResultsPerPage;
+
+  try {
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT(*) FROM
+      (SELECT temp.game_name, temp.title, lookup.title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+      (SELECT id, viewer_count, title FROM streams.streams) AS lookup
+      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
+
+    result.data =
+      await prisma.$queryRaw`SELECT temp.game_name, temp.title AS stream_title1, lookup.title AS stream_title2, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+      (SELECT id, viewer_count, title FROM streams.streams) AS lookup
+      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count
+      limit ${webappResultsPerPage} offset ${offset}`;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return result;
+  }
+};
+
 module.exports.seed = seed;
 module.exports.getStreamsPerGame = getStreamsPerGame;
+module.exports.getStreamsHighestViewersPerGame =
+  getStreamsHighestViewersPerGame;
 module.exports.getStreamsEvenViewerCount = getStreamsEvenViewerCount;
 module.exports.getStreamsOddViewerCount = getStreamsOddViewerCount;
 module.exports.getMedianViewerCount = getMedianViewerCount;
 module.exports.getStreamsTop100 = getStreamsTop100;
+module.exports.getStreamsSameViewers = getStreamsSameViewers;

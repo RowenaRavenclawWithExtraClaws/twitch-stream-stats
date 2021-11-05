@@ -10,6 +10,8 @@ const {
   getStreamsEvenViewerCount,
   getStreamsTop100,
   getStreamsPerGame,
+  getStreamsHighestViewersPerGame,
+  getStreamsSameViewers,
 } = require("./prisma/queries");
 
 const runApp = async () => {
@@ -35,7 +37,12 @@ const runApp = async () => {
   );
 
   server.get("/streams/highest-viewers", (req, res) =>
-    endpointHandler(req, res, () => {}, streams.getStreamsHighestViewersPerGame)
+    endpointHandler(
+      req,
+      res,
+      getStreamsHighestViewersPerGame,
+      streams.getStreamsHighestViewersPerGame
+    )
   );
 
   server.get("/streams/median-viewers", (req, res) =>
@@ -65,7 +72,12 @@ const runApp = async () => {
   );
 
   server.get("/streams/same-viewers", (req, res) =>
-    endpointHandler(req, res, () => {}, streams.getStreamsSameViewerCount)
+    endpointHandler(
+      req,
+      res,
+      getStreamsSameViewers,
+      streams.getStreamsSameViewerCount
+    )
   );
 
   server.listen(port, function () {
