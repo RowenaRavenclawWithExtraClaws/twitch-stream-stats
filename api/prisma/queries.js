@@ -96,7 +96,7 @@ const getStreamsEvenViewerCount = async (page) => {
       await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 = 0`;
 
     result.data =
-      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 = 0
+      await prisma.$queryRaw`SELECT title, game_name, viewer_count FROM streams.streams WHERE viewer_count % 2 = 0
                              limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
@@ -114,7 +114,7 @@ const getStreamsOddViewerCount = async (page) => {
       await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 != 0`;
 
     result.data =
-      await prisma.$queryRaw`SELECT * FROM streams.streams WHERE viewer_count % 2 != 0
+      await prisma.$queryRaw`SELECT title, game_name, viewer_count FROM streams.streams WHERE viewer_count % 2 != 0
                              limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
@@ -130,6 +130,7 @@ const getStreamsTop100 = async (page) => {
   try {
     result.data = await prisma.streams.findMany({
       orderBy: { viewer_count: "desc" },
+      select: { title, game_name, viewer_count: true },
       take: webappResultsPerPage,
       skip: offset,
     });
