@@ -124,13 +124,13 @@ const getStreamsOddViewerCount = async (page) => {
 };
 
 const getStreamsTop100 = async (page) => {
-  let result = { data: [], recordCount: 100 };
+  let result = { data: [], recordCount: [{ count: 100 }] };
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
     result.data = await prisma.streams.findMany({
       orderBy: { viewer_count: "desc" },
-      select: { title, game_name, viewer_count: true },
+      select: { title: true, game_name: true, viewer_count: true },
       take: webappResultsPerPage,
       skip: offset,
     });
