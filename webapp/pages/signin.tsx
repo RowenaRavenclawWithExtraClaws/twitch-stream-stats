@@ -17,14 +17,18 @@ const Signin: NextPage = () => {
           Get started by signing in to your Twitch account
         </p>
 
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<Icon icon="la:twitch" />}
-          className={styles.twitchbut}
+        <a
+          href={`https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=dejhj47nm5nunxeavvfvhphi7us45o&redirect_uri=http://localhost:3000&scope=user:read:email&force_verify=true`}
         >
-          Sign in with Twitch.tv
-        </Button>
+          <Button
+            variant="contained"
+            size="large"
+            startIcon={<Icon icon="la:twitch" />}
+            className={styles.twitchbut}
+          >
+            Sign in with Twitch.tv
+          </Button>
+        </a>
       </main>
 
       <CustomFooter />
