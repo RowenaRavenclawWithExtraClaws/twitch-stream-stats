@@ -87,6 +87,8 @@ const Home: NextPage = () => {
                 title={info.title}
                 data={info.data}
                 pageCount={info.pageCount}
+                endpoint={endpoints[indx].endpoint}
+                setter={endpoints[indx].setter}
               />
             </Grid>
           ))}

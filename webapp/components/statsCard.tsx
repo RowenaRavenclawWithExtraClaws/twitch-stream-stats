@@ -17,6 +17,8 @@ const StatsCard = (props: {
   title: string;
   data: Array<object>;
   pageCount: number;
+  endpoint: string;
+  setter: (something: number | object) => void;
 }) => {
   return (
     <Card sx={{ minWidth: 400 }} style={{ marginTop: 20 }}>
@@ -64,7 +66,11 @@ const StatsCard = (props: {
                 </TableBody>
               </Table>
             </TableContainer>
-            <CustomPagination pageCount={props.pageCount} />
+            <CustomPagination
+              pageCount={props.pageCount}
+              endpoint={props.endpoint}
+              setter={props.setter}
+            />
           </>
         )}
       </CardContent>
