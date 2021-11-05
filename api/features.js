@@ -60,6 +60,7 @@ const calcStreamsOddViewerCount = (streamData) => {
     streamData,
     (stream) => stream.viewer_count % 2 !== 0
   );
+
   return oddStreams;
 };
 
