@@ -1,6 +1,6 @@
 const { addUser, getUser } = require("../prisma/queries");
 const { webappResultsPerPage } = require("./constants");
-const { slice, getHashParams, requestUsername } = require("./utility");
+const { slice, requestUsername, isSessionAlive } = require("./utility");
 
 const endpointHandler = async (
   req,
@@ -47,8 +47,8 @@ const executeInMemoryFeature = async (req, res, inMemoryFeatureFunc) => {
 };
 
 const authHandler = async (req, res) => {
-  if (req.query.hash) {
-    const result = await resolveWithHash(req.query.hash);
+  if (req.query.access_token) {
+    const result = await resolveWithHash(req.query.access_token);
 
     res.send(201, result);
   } else if (req.query.username) {
@@ -57,12 +57,13 @@ const authHandler = async (req, res) => {
     if (result.username.length && result.liveSession)
       res.send({ username: result.username, allow_signin: true });
     else res.send(404, { username: result.username, allow_signin: false });
-  } else res.send(400, { message: "bad request" });
+  } else {
+    res.send(400, { message: "bad request" });
+  }
 };
 
-const resolveWithHash = async (hash) => {
-  const hashParams = getHashParams(hash);
-  const username = await requestUsername(hashParams.access_token);
+const resolveWithHash = async (accessToken) => {
+  const username = await requestUsername(accessToken);
   const result = await addUser(username, Date.now());
 
   return result;
