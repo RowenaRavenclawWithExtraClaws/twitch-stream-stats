@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import usernameReducer from "./usernameSlice";
 import streamsPerGameReducer from "./streamsPerGameSlice";
 import viewersPerGameReducer from "./viewersPerGameSlice";
 import medianViewersReducer from "./medianViewersSlice";
@@ -9,6 +10,7 @@ import streamsSameViewersReducer from "./streamsSameViewersSlice";
 
 const store = configureStore({
   reducer: {
+    username: usernameReducer,
     streamsPerGame: streamsPerGameReducer,
     viewersPerGame: viewersPerGameReducer,
     medianViewers: medianViewersReducer,
