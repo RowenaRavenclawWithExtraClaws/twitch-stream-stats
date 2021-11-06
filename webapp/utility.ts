@@ -41,9 +41,9 @@ export const isAuthUser = async (hash: string) => {
   const username = localStorage.getItem("username");
 
   if (username) {
-    return resolveWithUsername(username);
+    return await resolveWithUsername(username);
   } else if (hash.length) {
-    return resolveWithHash(document.location.hash);
+    return await resolveWithHash(hash);
   }
 
   return false;
@@ -58,17 +58,42 @@ const resolveWithUsername = async (username: string) => {
 
   const body = await response.json();
 
-  localStorage.setItem("usename", body.username);
+  localStorage.setItem("username", body.username);
 
   return true;
 };
 
 const resolveWithHash = async (hash: string) => {
-  const response = await fetch(`http://localhost:8000/users/auth?hash=${hash}`);
+  const accessToken = getHashParams(hash).access_token;
+
+  const response = await fetch(
+    `http://localhost:8000/users/auth?access_token=${accessToken}`
+  );
 
   const body = await response.json();
 
-  localStorage.setItem("usename", body.username);
+  localStorage.setItem("username", body.username);
 
   return true;
+};
+
+const getHashParams = (hash: string) => {
+  type HashParam = {
+    [key: string]: string;
+  };
+
+  let hashParams: HashParam = {};
+
+  let e,
+    a = /\+/g,
+    r = /([^&;=]+)=?([^&;]*)/g,
+    q = hash.substring(1);
+
+  const d = (s: string) => {
+    return decodeURIComponent(s.replace(a, " "));
+  };
+
+  while ((e = r.exec(q))) hashParams[d(e[1])] = d(e[2]);
+
+  return hashParams;
 };

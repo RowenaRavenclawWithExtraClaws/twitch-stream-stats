@@ -7,7 +7,8 @@ import { Avatar, IconButton, Tooltip } from "@mui/material";
 const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const username = localStorage.getItem("username") as string;
+
+  const username = "salemxx";
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
