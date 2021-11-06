@@ -7,6 +7,7 @@ import { Avatar, IconButton, Tooltip } from "@mui/material";
 const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const username = localStorage.getItem("username") as string;
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -22,7 +23,7 @@ const ProfileMenu = () => {
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <Avatar sx={{ width: 32, height: 32, backgroundColor: "#9256ed" }}>
-              {localStorage.getItem("username")}
+              {username[0]}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -61,7 +62,7 @@ const ProfileMenu = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>Salem</MenuItem>
+        <MenuItem>{username}</MenuItem>
         <MenuItem>Logout</MenuItem>
       </Menu>
     </div>
