@@ -1,4 +1,4 @@
-const { addUser, getUser } = require("../prisma/queries");
+const { addUser, getUser, deleteUser } = require("../prisma/queries");
 const { webappResultsPerPage } = require("./constants");
 const { slice, requestUsername, isSessionAlive } = require("./utility");
 
@@ -79,5 +79,12 @@ const resolveWithUsername = async (username) => {
   } else return { username: userData.username, liveSession: false };
 };
 
+const logoutHandler = async (req, res) => {
+  await deleteUser(req.query.username);
+
+  res.send(204);
+};
+
 module.exports.endpointHandler = endpointHandler;
 module.exports.authHandler = authHandler;
+module.exports.logoutHandler = logoutHandler;
