@@ -97,3 +97,14 @@ const getHashParams = (hash: string) => {
 
   return hashParams;
 };
+
+export const unslugify = (word: string) => {
+  let newWord = word[0].toUpperCase();
+
+  for (let i = 1; i < word.length; i++) {
+    if (word[i] === "_") newWord = `${newWord} `;
+    else newWord = `${newWord}${word[i]}`;
+  }
+
+  return newWord;
+};

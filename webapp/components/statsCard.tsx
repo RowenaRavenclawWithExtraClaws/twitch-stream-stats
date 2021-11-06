@@ -10,6 +10,7 @@ import {
   Table,
   Chip,
 } from "@mui/material";
+import { unslugify } from "../utility";
 import CustomMenue from "./customMenu";
 import CustomPagination from "./customPagination";
 import EmptyCard from "./emptyCard";
@@ -40,7 +41,7 @@ const StatsCard = (props: {
                   <TableRow>
                     {Object.keys(props.data[0]).map((field, indx) => (
                       <TableCell key={indx} style={{ fontWeight: "bold" }}>
-                        {field}
+                        {unslugify(field)}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -60,7 +61,13 @@ const StatsCard = (props: {
                           }}
                         >
                           {typeof val === "number" ? (
-                            <Chip label={val} color="info"></Chip>
+                            <Chip
+                              label={val}
+                              sx={{
+                                backgroundColor: "#9256ed",
+                                color: "#ffffff",
+                              }}
+                            />
                           ) : (
                             val
                           )}
