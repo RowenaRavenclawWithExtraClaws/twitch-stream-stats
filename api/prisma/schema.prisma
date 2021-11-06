@@ -23,3 +23,11 @@ model streams {
   tag_ids       String[]
   is_mature     Boolean
 }
+
+model users {
+  id            Int    @default(autoincrement())
+  username      String
+  session_start BigInt
+
+  @@id([id, username])
+}
