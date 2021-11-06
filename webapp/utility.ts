@@ -37,12 +37,12 @@ const stringifyQueryParams = (queryParams: any) => {
   return queryString;
 };
 
-export const isAuthUser = async () => {
+export const isAuthUser = async (hash: string) => {
   const username = localStorage.getItem("username");
 
   if (username) {
     return resolveWithUsername(username);
-  } else if (document.location.hash) {
+  } else if (hash.length) {
     return resolveWithHash(document.location.hash);
   }
 

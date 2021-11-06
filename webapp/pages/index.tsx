@@ -30,7 +30,7 @@ const Home: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    isAuthUser().then((isAuthed) => {
+    isAuthUser(document.location.hash).then((isAuthed) => {
       if (isAuthed) {
         Promise.all(
           endpoints.map((endpoint) =>
