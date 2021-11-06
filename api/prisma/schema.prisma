@@ -25,9 +25,7 @@ model streams {
 }
 
 model users {
-  id            Int    @default(autoincrement())
-  username      String
+  id            Int    @id @default(autoincrement())
+  username      String @unique(map: "user_unique")
   session_start BigInt
-
-  @@id([id, username])
 }
