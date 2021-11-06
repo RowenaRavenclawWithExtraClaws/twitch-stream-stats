@@ -22,7 +22,7 @@ const ProfileMenu = () => {
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <Avatar sx={{ width: 32, height: 32, backgroundColor: "#9256ed" }}>
-              M
+              {localStorage.getItem("username")}
             </Avatar>
           </IconButton>
         </Tooltip>
