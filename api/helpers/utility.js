@@ -28,6 +28,24 @@ const requestStreamData = async (cursor) => {
   };
 };
 
+const requestUsername = async (accessToken) => {
+  const response = await requestPromise(
+    `https://${twitchAuthInfo.baseUrl}/users`,
+    {
+      headers: {
+        "Client-id": twitchAuthInfo.clientId,
+      },
+      auth: {
+        bearer: accessToken,
+      },
+    }
+  );
+
+  const username = response.data[0].login;
+
+  return username;
+};
+
 // Fisher-Yates Algorithm
 const shuffle = (array) => {
   let randomIndex;
@@ -136,9 +154,37 @@ const slice = (array, start, end) => {
   return newArray;
 };
 
+const getHashParams = (hash) => {
+  let hashParams = {};
+
+  let e,
+    a = /\+/g, // Regex for replacing addition symbol with a space
+    r = /([^&;=]+)=?([^&;]*)/g,
+    q = hash.substring(1);
+
+  const d = (s) => {
+    return decodeURIComponent(s.replace(a, " "));
+  };
+
+  while ((e = r.exec(q))) hashParams[d(e[1])] = d(e[2]);
+
+  return hashParams;
+};
+
+const isSessionAlive = (sessionStart) => {
+  const timeSpan = Date.now() / 1000 - sessionStart / 1000;
+
+  if (timeSpan < 3600) return true;
+
+  return false;
+};
+
 module.exports.requestStreamData = requestStreamData;
 module.exports.shuffle = shuffle;
 module.exports.calcMedian = calcMedian;
 module.exports.filter = filter;
 module.exports.sort = sort;
 module.exports.slice = slice;
+module.exports.getHashParams = getHashParams;
+module.exports.requestUsername = requestUsername;
+module.exports.isSessionAlive = isSessionAlive;
