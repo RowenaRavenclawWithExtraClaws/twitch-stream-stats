@@ -75,6 +75,8 @@ const resolveWithUsername = async (username) => {
   if (userData.username.length) {
     const liveSession = isSessionAlive(userData.session_start);
 
+    if (!liveSession) await deleteUser(userData.username);
+
     return { username: userData.username, liveSession: liveSession };
   } else return { username: userData.username, liveSession: false };
 };
