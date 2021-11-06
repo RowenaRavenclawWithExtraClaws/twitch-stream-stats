@@ -8,6 +8,7 @@ import {
   TableCell,
   TableBody,
   Table,
+  Chip,
 } from "@mui/material";
 import CustomMenue from "./customMenu";
 import CustomPagination from "./customPagination";
@@ -58,7 +59,11 @@ const StatsCard = (props: {
                             maxWidth: 150,
                           }}
                         >
-                          {val}
+                          {typeof val === "number" ? (
+                            <Chip label={val} color="info"></Chip>
+                          ) : (
+                            val
+                          )}
                         </TableCell>
                       ))}
                     </TableRow>
