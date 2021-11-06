@@ -36,3 +36,39 @@ const stringifyQueryParams = (queryParams: any) => {
 
   return queryString;
 };
+
+export const isAuthUser = async () => {
+  const username = localStorage.getItem("username");
+
+  if (username) {
+    return resolveWithUsername(username);
+  } else if (document.location.hash) {
+    return resolveWithHash(document.location.hash);
+  }
+
+  return false;
+};
+
+const resolveWithUsername = async (username: string) => {
+  const response = await fetch(
+    `http://localhost:8000/users/auth?username=${username}`
+  );
+
+  if (response.status === 404) return false;
+
+  const body = await response.json();
+
+  localStorage.setItem("usename", body.username);
+
+  return true;
+};
+
+const resolveWithHash = async (hash: string) => {
+  const response = await fetch(`http://localhost:8000/users/auth?hash=${hash}`);
+
+  const body = await response.json();
+
+  localStorage.setItem("usename", body.username);
+
+  return true;
+};
