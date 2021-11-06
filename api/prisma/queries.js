@@ -27,6 +27,37 @@ const seed = async (streamData) => {
   }*/
 };
 
+const addUser = async (username, timeStamp) => {
+  try {
+    await prisma.users.create({
+      data: {
+        username: username,
+        session_start: timeStamp,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return { username: username };
+  }
+};
+
+const getUser = async (username) => {
+  let userData;
+
+  try {
+    userData = await prisma.users.findUnique({
+      where: {
+        username: username,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return userData;
+  }
+};
+
 const getStreamsPerGame = async (page) => {
   let result = { data: [], recordCount: 0 };
   const offset = (page - 1) * webappResultsPerPage;
@@ -171,3 +202,5 @@ module.exports.getStreamsOddViewerCount = getStreamsOddViewerCount;
 module.exports.getMedianViewerCount = getMedianViewerCount;
 module.exports.getStreamsTop100 = getStreamsTop100;
 module.exports.getStreamsSameViewers = getStreamsSameViewers;
+module.exports.addUser = addUser;
+module.exports.getUser = getUser;
