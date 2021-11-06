@@ -2,7 +2,7 @@ const restify = require("restify");
 const cron = require("node-cron");
 const cors = require("cors");
 const { port } = require("./helpers/constants");
-const { endpointHandler } = require("./helpers/endpointHandler");
+const { endpointHandler, authHandler } = require("./helpers/endpointHandler");
 const { streams } = require("./streams");
 const {
   seed,
@@ -33,6 +33,8 @@ const runApp = async () => {
   server.use(restify.plugins.acceptParser(server.acceptable));
   server.use(restify.plugins.queryParser());
   server.use(restify.plugins.bodyParser());
+
+  server.get("/users/auth", (req, res) => authHandler(req, res));
 
   server.get("/streams/per-game", (req, res) =>
     endpointHandler(req, res, getStreamsPerGame, streams.getStreamsPerGame)
