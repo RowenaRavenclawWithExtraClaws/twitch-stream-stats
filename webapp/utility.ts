@@ -3,6 +3,7 @@ import { setStreamsOddViewers } from "./redux/streamsOddViewersSlice";
 import { setStreamsPerGame } from "./redux/streamsPerGameSlice";
 import { setStreamsSameViewers } from "./redux/streamsSameViewersSlice";
 import { setStreamsTop100 } from "./redux/streamsTop100Slice";
+import { setUsername } from "./redux/usernameSlice";
 import { setViewersPerGame } from "./redux/viewersPerGameSlice";
 
 export const endpoints = [
@@ -37,19 +38,19 @@ const stringifyQueryParams = (queryParams: any) => {
   return queryString;
 };
 
-export const isAuthUser = async (hash: string) => {
+export const isAuthUser = async (hash: string, dispatch: any) => {
   const username = localStorage.getItem("username");
 
   if (username) {
-    return await resolveWithUsername(username);
+    return await resolveWithUsername(username, dispatch);
   } else if (hash.length) {
-    return await resolveWithHash(hash);
+    return await resolveWithHash(hash, dispatch);
   }
 
   return false;
 };
 
-const resolveWithUsername = async (username: string) => {
+const resolveWithUsername = async (username: string, dispatch: any) => {
   const response = await fetch(
     `http://localhost:8000/users/auth?username=${username}`
   );
@@ -59,11 +60,12 @@ const resolveWithUsername = async (username: string) => {
   const body = await response.json();
 
   localStorage.setItem("username", body.username);
+  dispatch(setUsername(body.username));
 
   return true;
 };
 
-const resolveWithHash = async (hash: string) => {
+const resolveWithHash = async (hash: string, dispatch: any) => {
   const accessToken = getHashParams(hash).access_token;
 
   const response = await fetch(
@@ -73,6 +75,7 @@ const resolveWithHash = async (hash: string) => {
   const body = await response.json();
 
   localStorage.setItem("username", body.username);
+  dispatch(setUsername(body.username));
 
   return true;
 };
@@ -107,4 +110,8 @@ export const unslugify = (word: string) => {
   }
 
   return newWord;
+};
+
+export const logUserOut = async (username: string) => {
+  await fetch(`http://localhost:8000/users/logout?username=${username}`);
 };
