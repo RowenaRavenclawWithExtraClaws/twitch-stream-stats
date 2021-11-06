@@ -58,6 +58,18 @@ const getUser = async (username) => {
   }
 };
 
+const deleteUser = async (username) => {
+  try {
+    await prisma.users.delete({
+      where: {
+        username: username,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getStreamsPerGame = async (page) => {
   let result = { data: [], recordCount: 0 };
   const offset = (page - 1) * webappResultsPerPage;
@@ -204,3 +216,4 @@ module.exports.getStreamsTop100 = getStreamsTop100;
 module.exports.getStreamsSameViewers = getStreamsSameViewers;
 module.exports.addUser = addUser;
 module.exports.getUser = getUser;
+module.exports.deleteUser = deleteUser;
