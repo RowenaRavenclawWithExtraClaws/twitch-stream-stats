@@ -6,7 +6,7 @@ const {
   calcStreamsSameViewerCount,
   calcStreamsOddViewerCount,
   calcStreamsEvenViewerCount,
-} = require("./features");
+} = require("./inMemory/features");
 const { pageCount } = require("./helpers/constants");
 const { requestStreamData, shuffle } = require("./helpers/utility");
 
@@ -27,7 +27,7 @@ class Streams {
       requestCount += 1;
     }
 
-    this.streamData = shuffle(this.streamData);
+    //this.streamData = shuffle(this.streamData);
   };
 
   getStreamData = () => this.streamData;

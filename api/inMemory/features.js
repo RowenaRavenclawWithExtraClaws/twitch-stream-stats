@@ -1,4 +1,4 @@
-const { sort, calcMedian, filter, slice } = require("./helpers/utility");
+const { sort, calcMedian, filter, slice } = require("../helpers/utility");
 
 const calcStreamsPerGame = (streamData) => {
   let gameStreamDict = {};
