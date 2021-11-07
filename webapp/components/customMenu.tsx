@@ -1,11 +1,18 @@
 import { List, ListItem, ListItemText, Menu, MenuItem } from "@mui/material";
 import { MouseEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { customFetch } from "../utility";
 
-const CustomMenue = () => {
+const CustomMenue = (props: {
+  endpoint: string;
+  setter: (body: number | object) => void;
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const open = Boolean(anchorEl);
   const options = ["Database", "In-memory"];
+
+  const dispatch = useDispatch();
 
   const handleClickListItem = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -17,6 +24,15 @@ const CustomMenue = () => {
   ) => {
     setSelectedIndex(index);
     setAnchorEl(null);
+
+    if (index === 1)
+      customFetch(props.endpoint, { page: 1, inmemory: 1 }, (body) =>
+        dispatch(props.setter(body))
+      );
+    else
+      customFetch(props.endpoint, { page: 1 }, (body) =>
+        dispatch(props.setter(body))
+      );
   };
 
   const handleClose = () => {

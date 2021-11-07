@@ -20,7 +20,7 @@ const StatsCard = (props: {
   data: Array<object>;
   pageCount: number;
   endpoint: string;
-  setter: (something: number | object) => void;
+  setter: (body: number | object) => void;
 }) => {
   return (
     <Card sx={{ minWidth: 400 }} style={{ marginTop: 20 }}>
@@ -29,7 +29,7 @@ const StatsCard = (props: {
           <Typography variant="h6" component="div">
             {props.title}
           </Typography>
-          <CustomMenue />
+          <CustomMenue endpoint={props.endpoint} setter={props.setter} />
         </div>
         {!props.data.length ? (
           <EmptyCard />
