@@ -7,13 +7,13 @@ const prisma = new PrismaClient();
 const seed = async (streamData) => {
   await prisma.streams.deleteMany({ where: {} });
 
-  try {
+  /*try {
     await prisma.streams.createMany({ data: streamData });
   } catch (error) {
     console.log(error);
-  }
+  }*/
 
-  /*let i = 0;
+  let i = 0;
 
   try {
     for (i = 0; i < streamData.length; i++) {
@@ -24,7 +24,7 @@ const seed = async (streamData) => {
   } catch (error) {
     console.log(error);
     console.log(streamData[i]);
-  }*/
+  }
 };
 
 const addUser = async (username, timeStamp) => {
