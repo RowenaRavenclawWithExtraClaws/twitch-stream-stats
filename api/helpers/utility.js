@@ -4,6 +4,7 @@ const { twitchAuthInfo, streamsPerPage } = require("./constants");
 
 const requestPromise = promisify(request);
 
+// fetch streams data from the Twitch API
 const requestStreamData = async (cursor) => {
   const response = await requestPromise(
     `https://${twitchAuthInfo.baseUrl}/streams?first=${streamsPerPage}${
@@ -28,6 +29,7 @@ const requestStreamData = async (cursor) => {
   };
 };
 
+// fetch username of current user using the access token provided in the redirect link
 const requestUsername = async (accessToken) => {
   const response = await requestPromise(
     `https://${twitchAuthInfo.baseUrl}/users`,
