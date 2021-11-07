@@ -18,6 +18,7 @@ const calcStreamsPerGame = (streamData) => {
 
 const calcStreamsHighestViewersPerGame = (streamData) => {
   let gameStreamDict = {};
+  let temp = [];
 
   for (let i = 0; i < streamData.length; i++) {
     if (gameStreamDict[streamData[i].game_id]) {
@@ -25,22 +26,19 @@ const calcStreamsHighestViewersPerGame = (streamData) => {
         streamData[i].viewer_count >
         gameStreamDict[streamData[i].game_id].viewer_count
       ) {
-        gameStreamDict[streamData[i].game_id].game_name =
-          streamData[i].game_name;
-        gameStreamDict[streamData[i].game_id].stream_title =
-          streamData[i].title;
-        gameStreamDict[streamData[i].game_id].viewer_count =
-          streamData[i].viewer_count;
+        gameStreamDict[streamData[i].game_id] =
+          gameStreamDict[streamData[i].game_id];
       }
     } else
-      gameStreamDict[streamData[i].game_id] = {
-        game_name: streamData[i].game_name,
-        stream_title: streamData[i].title,
-        viewer_count: streamData[i].viewer_count,
-      };
+      gameStreamDict[streamData[i].game_id] =
+        gameStreamDict[streamData[i].game_id];
   }
 
-  return Object.values(gameStreamDict);
+  temp = Object.values(gameStreamDict);
+
+  sort(temp, (stream1, stream2) => stream1.viewer_count > stream2.viewer_count);
+
+  return temp;
 };
 
 const calcMedianViewers = (streamData) => {
