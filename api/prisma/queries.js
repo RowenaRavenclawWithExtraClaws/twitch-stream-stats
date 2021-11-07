@@ -189,14 +189,14 @@ const getStreamsSameViewers = async (page) => {
 
   try {
     result.recordCount = await prisma.$queryRaw`SELECT COUNT(*) FROM
-      (SELECT temp.game_name, temp.title, lookup.title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
-      (SELECT id, viewer_count, title FROM streams.streams) AS lookup
-      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
+      (SELECT DISTINCT temp.game_name, temp.title AS stream_title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+        (SELECT id, viewer_count, title FROM streams.streams) AS lookup
+        ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
 
     result.data =
-      await prisma.$queryRaw`SELECT temp.game_name, temp.title AS stream_title1, lookup.title AS stream_title2, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+      await prisma.$queryRaw`SELECT DISTINCT temp.game_name, temp.title AS stream_title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
       (SELECT id, viewer_count, title FROM streams.streams) AS lookup
-      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count
+      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count ORDER BY temp.viewer_count DESC
       limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
