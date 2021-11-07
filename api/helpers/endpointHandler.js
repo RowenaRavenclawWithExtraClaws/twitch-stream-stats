@@ -1,4 +1,4 @@
-const { addUser, getUser, deleteUser } = require("../prisma/queries");
+const { addUser, getUser, deleteUser } = require("../prisma/usersQueries");
 const { webappResultsPerPage } = require("./constants");
 const { slice, requestUsername, isSessionAlive } = require("./utility");
 

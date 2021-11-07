@@ -13,6 +13,7 @@ const { requestStreamData, shuffle } = require("./helpers/utility");
 class Streams {
   streamData = [];
 
+  // fetch data from twitch API and store it in memory
   populateStreamData = async () => {
     let requestCount = 0;
     let cursor = null;
@@ -27,9 +28,10 @@ class Streams {
       requestCount += 1;
     }
 
-    //this.streamData = shuffle(this.streamData);
+    this.streamData = shuffle(this.streamData);
   };
 
+  // All in-memory features
   getStreamData = () => this.streamData;
 
   getStreamsPerGame = () => calcStreamsPerGame(this.streamData);

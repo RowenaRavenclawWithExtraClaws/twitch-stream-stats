@@ -17,14 +17,15 @@ const {
   getStreamsPerGame,
   getStreamsHighestViewersPerGame,
   getStreamsSameViewers,
-} = require("./prisma/queries");
+} = require("./prisma/streamsQueries");
 
 const runApp = async () => {
+  // fetch data from twitch API and seed the database
   await streams.populateStreamData();
   await seed(streams.getStreamData());
 
+  // cron job to update the data every 15 minutes
   cron.schedule("15 * * * * ", async () => {
-    console.log("Eeem");
     await streams.populateStreamData();
     await seed(streams.getStreamData());
   });
@@ -34,11 +35,13 @@ const runApp = async () => {
     version: "1.0.0",
   });
 
+  // middlewares
   server.use(cors());
   server.use(restify.plugins.acceptParser(server.acceptable));
   server.use(restify.plugins.queryParser());
   server.use(restify.plugins.bodyParser());
 
+  // endpoints
   server.get("/users/auth", (req, res) => authHandler(req, res));
 
   server.get("/users/logout", (req, res) => logoutHandler(req, res));
@@ -91,6 +94,7 @@ const runApp = async () => {
     )
   );
 
+  // start server
   server.listen(port, function () {
     console.log(`listening at port ${port}`);
   });
