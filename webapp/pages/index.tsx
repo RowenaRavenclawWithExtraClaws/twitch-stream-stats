@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
-import { Grid, Container } from "@mui/material";
+import { Grid, Container, Chip } from "@mui/material";
 import CustomFooter from "../components/customFooter";
 import CustomHeader from "../components/customHeader";
 import styles from "../styles/Home.module.css";
@@ -16,6 +16,10 @@ import { selectStreamsSameViewers } from "../redux/streamsSameViewersSlice";
 import ProfileMenu from "../components/profileMenu";
 import { customFetch, endpoints, isAuthUser } from "../utility";
 import FetchIndicator from "../components/fetchIndicator";
+import {
+  selectMedianViewers,
+  setMedianViewers,
+} from "../redux/medianViewersSlice";
 
 const Home: NextPage = () => {
   const streamsPerGame = useSelector(selectStreamsPerGame);
@@ -24,6 +28,7 @@ const Home: NextPage = () => {
   const streamsEvenViewers = useSelector(selectStreamsEvenViewers);
   const streamsTop100 = useSelector(selectStreamsTop100);
   const streamsSameViewers = useSelector(selectStreamsSameViewers);
+  const medianViewers = useSelector(selectMedianViewers);
 
   const [fetching, toggleFetching] = useState(true);
   const dispatch = useDispatch();
@@ -32,13 +37,16 @@ const Home: NextPage = () => {
   useEffect(() => {
     isAuthUser(document.location.hash, dispatch).then((isAuthed) => {
       if (isAuthed) {
-        Promise.all(
-          endpoints.map((endpoint) =>
+        Promise.all([
+          ...endpoints.map((endpoint) =>
             customFetch(endpoint.endpoint, { page: 1 }, (body) =>
               dispatch(endpoint.setter(body))
             )
-          )
-        ).then(() => toggleFetching(false));
+          ),
+          customFetch("median-viewers", {}, (body) =>
+            dispatch(setMedianViewers(body))
+          ),
+        ]).then(() => toggleFetching(false));
       } else router.replace("/signin");
     });
   }, []);
@@ -83,7 +91,13 @@ const Home: NextPage = () => {
       <CustomHeader title="Stream Stats" />
       <main className={styles.main}>
         <div style={{ width: "100%" }}>
-          <h1 className={styles.title}>Stream Insights</h1>
+          <div style={{ display: "inline-block" }}>
+            <h1 className={styles.title}>Stream Insights</h1>
+            <p>
+              Median of viewers{" "}
+              <Chip label={medianViewers.data} color="success"></Chip>
+            </p>
+          </div>
           <ProfileMenu />
         </div>
         <Grid container spacing={2}>
