@@ -26,12 +26,9 @@ const calcStreamsHighestViewersPerGame = (streamData) => {
         streamData[i].viewer_count >
         gameStreamDict[streamData[i].game_id].viewer_count
       ) {
-        gameStreamDict[streamData[i].game_id] =
-          gameStreamDict[streamData[i].game_id];
+        gameStreamDict[streamData[i].game_id] = streamData[i];
       }
-    } else
-      gameStreamDict[streamData[i].game_id] =
-        gameStreamDict[streamData[i].game_id];
+    } else gameStreamDict[streamData[i].game_id] = streamData[i];
   }
 
   temp = Object.values(gameStreamDict);
@@ -90,6 +87,8 @@ const calcStreamsTop100 = (streamData, descending = false) => {
 
 const calcStreamsSameViewerCount = (streamData) => {
   let streamDict = {};
+  let values = [];
+  let temp = [];
 
   for (let i = 0; i < streamData.length; i++) {
     if (streamDict[streamData[i].viewer_count])
@@ -116,7 +115,15 @@ const calcStreamsSameViewerCount = (streamData) => {
     if (streamDict[keysArr[i]].length === 1) delete streamDict[keysArr[i]];
   }
 
-  return Object.values(streamDict);
+  values = Object.values(streamDict);
+
+  for (let i = 0; i < values.length; i++) {
+    temp.push(...values[i]);
+  }
+
+  sort(temp, (stream1, stream2) => stream1.viewer_count > stream2.viewer_count);
+
+  return temp;
 };
 
 module.exports.calcStreamsPerGame = calcStreamsPerGame;
