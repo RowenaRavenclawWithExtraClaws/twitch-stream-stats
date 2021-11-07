@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { webappResultsPerPage } = require("../helpers/constants");
 const { calcMedian } = require("../helpers/utility");
-const { countRawQueries, selectRawQueries } = require("./rawQueries");
 
 const prisma = new PrismaClient();
 
@@ -24,12 +23,14 @@ const getStreamsPerGame = async (page) => {
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result.recordCount = await prisma.$queryRaw`${countRawQueries.perGame}`;
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT (*) FROM 
+                             (SELECT COUNT (*) FROM streams.streams 
+                             GROUP BY game_id) AS streamspergame;`;
 
-    result.data = await prisma.$queryRaw`${selectRawQueries.perGame(
-      webappResultsPerPage,
-      offset
-    )}`;
+    result.data =
+      await prisma.$queryRaw`SELECT game_name, COUNT(*) as stream_count FROM streams.streams
+                             GROUP BY game_id, game_name
+                             limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -42,13 +43,16 @@ const getStreamsHighestViewersPerGame = async (page) => {
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result.recordCount =
-      await prisma.$queryRaw`${countRawQueries.highestViewers}`;
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT(*) FROM
+    (SELECT game_name, title, temp.viewer_count FROM streams.streams temp INNER JOIN
+    (SELECT game_id, MAX(viewer_count) as viewer_count FROM streams.streams group by game_id) AS lookup
+    ON lookup.game_id = temp.game_id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
 
-    result.data = await prisma.$queryRaw`${selectRawQueries.highestViewers(
-      webappResultsPerPage,
-      offset
-    )}`;
+    result.data =
+      await prisma.$queryRaw`SELECT game_name, title, temp.viewer_count FROM streams.streams temp INNER JOIN
+      (SELECT game_id, MAX(viewer_count) as viewer_count FROM streams.streams group by game_id) AS lookup
+      ON lookup.game_id = temp.game_id AND lookup.viewer_count = temp.viewer_count
+      limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -78,12 +82,12 @@ const getStreamsEvenViewerCount = async (page) => {
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result.recordCount = await prisma.$queryRaw`${countRawQueries.evenViewers}`;
+    result.recordCount =
+      await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 = 0`;
 
-    result.data = await prisma.$queryRaw`${selectRawQueries.evenViewers(
-      webappResultsPerPage,
-      offset
-    )}`;
+    result.data =
+      await prisma.$queryRaw`SELECT title, game_name, viewer_count FROM streams.streams WHERE viewer_count % 2 = 0
+                             limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -96,12 +100,12 @@ const getStreamsOddViewerCount = async (page) => {
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result.recordCount = await prisma.$queryRaw`${countRawQueries.oddViewers}`;
+    result.recordCount =
+      await prisma.$queryRaw`SELECT COUNT(*) FROM streams.streams WHERE viewer_count % 2 != 0`;
 
-    result.data = await prisma.$queryRaw`${selectRawQueries.oddViewers(
-      webappResultsPerPage,
-      offset
-    )}`;
+    result.data =
+      await prisma.$queryRaw`SELECT title, game_name, viewer_count FROM streams.streams WHERE viewer_count % 2 != 0
+                             limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
@@ -132,12 +136,16 @@ const getStreamsSameViewers = async (page) => {
   const offset = (page - 1) * webappResultsPerPage;
 
   try {
-    result.recordCount = await prisma.$queryRaw`${countRawQueries.sameViewers}`;
+    result.recordCount = await prisma.$queryRaw`SELECT COUNT(*) FROM
+      (SELECT DISTINCT temp.game_name, temp.title AS stream_title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+        (SELECT id, viewer_count, title FROM streams.streams) AS lookup
+        ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count) AS record_count;`;
 
-    result.data = await prisma.$queryRaw`${selectRawQueries.sameViewers(
-      webappResultsPerPage,
-      offset
-    )}`;
+    result.data =
+      await prisma.$queryRaw`SELECT DISTINCT temp.game_name, temp.title AS stream_title, temp.viewer_count FROM streams.streams AS temp INNER JOIN
+      (SELECT id, viewer_count, title FROM streams.streams) AS lookup
+      ON lookup.id <> temp.id AND lookup.viewer_count = temp.viewer_count ORDER BY temp.viewer_count DESC
+      limit ${webappResultsPerPage} offset ${offset}`;
   } catch (error) {
     console.log(error);
   } finally {
