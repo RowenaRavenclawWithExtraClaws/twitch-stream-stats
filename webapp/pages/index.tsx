@@ -93,10 +93,8 @@ const Home: NextPage = () => {
         <div style={{ width: "100%" }}>
           <div style={{ display: "inline-block" }}>
             <h1 className={styles.title}>Stream Insights</h1>
-            <p>
-              Median of viewers{" "}
-              <Chip label={medianViewers.data} color="success"></Chip>
-            </p>
+            <p>Median of viewers (1k streams) </p>
+            <Chip label={medianViewers.data} color="success"></Chip>
           </div>
           <ProfileMenu />
         </div>
