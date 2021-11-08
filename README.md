@@ -9,7 +9,14 @@ Just clone the repo and run `docker-compose up`
 ## Features
 
 - Sign in using Twitch account.
-- Display some stream stats and insights.
+- Display some stream stats and insights:
+  - Total amount of streams per game.
+  - Highest viewer count stream per game.
+  - Median amount of viewers for all streams.
+  - Streams with an odd number of viewers.
+  - Streams with an even number of viewers.
+  - List of top 100 streams that can be sorted ascending & descending.
+  - Streams with the same amount of viewers.
 
 ## Project folders
 
