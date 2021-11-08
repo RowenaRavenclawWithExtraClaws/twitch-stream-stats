@@ -1,6 +1,6 @@
 # Stream stats
 
-Stream stats is a web app that displays some stream stats extracted the Twitch API. You can start using the app here https://stream-stats.vercel.app/
+Twitch Stream Stats is a web app that displays some stream stats extracted the Twitch API. You can start using the app here https://stream-stats.vercel.app/
 
 ## Run locally
 
