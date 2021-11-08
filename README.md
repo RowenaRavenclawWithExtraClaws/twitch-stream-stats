@@ -23,6 +23,10 @@ Just clone the repo and run `docker-compose up`
 - `webapp` contains code for the web application
 - `api` contains code for the API that is consumed by the web application.
 
+## Project architecture
+
+![project-arch](https://github.com/rowenaravenclawwithextraclaws/twitch-stream-stats/blob/main/assets/project-arch.png)
+
 NOTE: IT IS NOT A MONOLITHIC APPLICATION. The web application, The API and the database are deployed separately.
 
 For more information see [web app doc](webapp/README.md) and [API doc](api/README.md)
