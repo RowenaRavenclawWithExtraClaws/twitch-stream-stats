@@ -16,26 +16,16 @@ Just clone the repo and run 'npm run dev'
 
 Others: SCSS, Material UI
 
-## Fronend Architecture
-
-![frontend-arch](https://github.com/rowenaravenclawwithextraclaws/nasser-blockchain-portal/blob/main/assets/frontend-arch.png)
+## Architecture
 
 ## How to improve
 
-### Add testing to both frontend and backend
+### Add testing
 
-- Use `Jest` and `supertest` libraries to test the API request.
-- Intruduce some form of stress testing for the API. Not sure what it should be.
-- Write unit test for components and functions in the helpers.js files.
+- Use `react-testing-framework` to test component rendering and pagination logic.
+- Use `Jest` to test the helper functions in `utility.ts` file
 
-### Implement caching
+### Add more functionality
 
-- Use the Write-Around caching strategy (my favourite).
-- Decide what to cache and when to do caching invalidation (The hardest thing!)
-- Setup a `Redis` server to add the caching layer.
-
-### Add more functionality to the client
-
-- Add extra page for displaying all the block data.
-- View blockchain.
-- View transaction details.
+- Sort and search capablities on all of the tables.
+- Display more info about a stream in a modal.
