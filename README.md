@@ -25,7 +25,7 @@ Just clone the repo and run `docker-compose up`
 
 ## Project architecture
 
-![project-arch](https://github.com/rowenaravenclawwithextraclaws/twitch-stream-stats/blob/main/assets/project-arch.png)
+![project-arch](https://github.com/RowenaRavenclawWithExtraClaws/twitch-stream-stats/blob/main/project-arch.png)
 
 NOTE: IT IS NOT A MONOLITHIC APPLICATION. The web application, The API and the database are deployed separately.
 
