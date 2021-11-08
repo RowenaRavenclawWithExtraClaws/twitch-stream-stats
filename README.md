@@ -4,15 +4,19 @@ Twitch Stream Stats is a web app that displays some stream stats extracted the T
 
 ## Run locally
 
-Just clone the repo and run `docker-compose up`
+- Just clone the repo.
+- Run `docker-compose up`.
+- Visit `localhost:3000` to see this beauty!
 
 ## Requirements Checks
+
+Mandatory:
 
 - Sign in using Twitch account. ✅
 - Seed a database with the current top 1000 live streams on Twitch. ✅
 - Shuffle this data before inserting it in your database. ✅
 - Store the user in the database once they login. ✅
-- Display some stream stats and insights: ✅
+- Display some stream stats and insights (in-memory and database): ✅
   - Total amount of streams per game. ✅
   - Highest viewer count stream per game. ✅
   - Median amount of viewers for all streams. ✅
@@ -21,11 +25,15 @@ Just clone the repo and run `docker-compose up`
   - List of top 100 streams that can be sorted descending. ✅
   - List of top 100 streams that can be sorted ascending. ❌
   - Streams with the same amount of viewers. ✅
-- Not using built in helper functions in the backend. ✅
-- Not using built in helper functions in the frontend. ❌
 - Update the top streams in your database every 15 minutes. ✅
 - Expire a user’s session after 1 hour, requiring them to log back in. ✅
 - Host your project somewhere so it’s publicly available for testing. ✅
+
+Optional:
+
+- Not using built in helper functions in the backend. ✅
+- Not using built in helper functions in the frontend. ❌
+- Pagination (five records per request) ✅
 
 ## Project folders
 

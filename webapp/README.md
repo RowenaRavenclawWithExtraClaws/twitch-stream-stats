@@ -2,9 +2,11 @@
 
 Web-based client application to display some stats and insights on streams data using the Twitch API.
 
-## Installation and Running
+## Run locally
 
-Just clone the repo and run 'npm run dev'
+- Just clone the repo.
+- Run 'npm run dev'.
+- Visit `localhost:3000` to see this beauty!
 
 ## Technologies used
 
