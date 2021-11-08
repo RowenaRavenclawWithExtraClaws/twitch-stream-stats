@@ -6,6 +6,8 @@ import { setStreamsTop100 } from "./redux/streamsTop100Slice";
 import { setUsername } from "./redux/usernameSlice";
 import { setViewersPerGame } from "./redux/viewersPerGameSlice";
 
+const apiBaseUrl = "https://twitch-stream-stats.herokuapp.com/";
+
 export const endpoints = [
   { endpoint: "per-game", setter: setStreamsPerGame },
   { endpoint: "highest-viewers", setter: setViewersPerGame },
@@ -21,9 +23,7 @@ export const customFetch = (
   dispatcher: (body: number | object) => void
 ) =>
   fetch(
-    `http://localhost:8000/streams/${endpoint}?${stringifyQueryParams(
-      queryParams
-    )}`
+    `${apiBaseUrl}streams/${endpoint}?${stringifyQueryParams(queryParams)}`
   ).then((res) => res.json().then((body) => dispatcher(body)));
 
 const stringifyQueryParams = (queryParams: any) => {
@@ -38,6 +38,7 @@ const stringifyQueryParams = (queryParams: any) => {
   return queryString;
 };
 
+// auth user using access token in the hash or username
 export const isAuthUser = async (hash: string, dispatch: any) => {
   const username = localStorage.getItem("username");
 
@@ -51,9 +52,7 @@ export const isAuthUser = async (hash: string, dispatch: any) => {
 };
 
 const resolveWithUsername = async (username: string, dispatch: any) => {
-  const response = await fetch(
-    `http://localhost:8000/users/auth?username=${username}`
-  );
+  const response = await fetch(`${apiBaseUrl}users/auth?username=${username}`);
 
   if (response.status === 404) return false;
 
@@ -69,7 +68,7 @@ const resolveWithHash = async (hash: string, dispatch: any) => {
   const accessToken = getHashParams(hash).access_token;
 
   const response = await fetch(
-    `http://localhost:8000/users/auth?access_token=${accessToken}`
+    `${apiBaseUrl}users/auth?access_token=${accessToken}`
   );
 
   const body = await response.json();
@@ -80,6 +79,7 @@ const resolveWithHash = async (hash: string, dispatch: any) => {
   return true;
 };
 
+// parse hash string into an object
 const getHashParams = (hash: string) => {
   type HashParam = {
     [key: string]: string;
@@ -101,6 +101,7 @@ const getHashParams = (hash: string) => {
   return hashParams;
 };
 
+// convert API data keys to more human-readable format (stream_count => Stream count)
 export const unslugify = (word: string) => {
   let newWord = word[0].toUpperCase();
 
@@ -113,5 +114,5 @@ export const unslugify = (word: string) => {
 };
 
 export const logUserOut = async (username: string) => {
-  await fetch(`http://localhost:8000/users/logout?username=${username}`);
+  await fetch(`${apiBaseUrl}users/logout?username=${username}`);
 };
