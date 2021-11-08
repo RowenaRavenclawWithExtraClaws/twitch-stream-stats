@@ -6,6 +6,11 @@ import CustomHeader from "../components/customHeader";
 import styles from "../styles/Home.module.css";
 
 const Signin: NextPage = () => {
+  const redirectURL =
+    process.env.NODE_ENV === ("development" as typeof process.env.NODE_ENV)
+      ? "http://localhost:3000"
+      : "https://stream-stats.vercel.app";
+
   return (
     <Container className={styles.container}>
       <CustomHeader title="Stream Stats | Sign in" />
@@ -18,7 +23,7 @@ const Signin: NextPage = () => {
         </p>
 
         <a
-          href={`https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=dejhj47nm5nunxeavvfvhphi7us45o&redirect_uri=http://localhost:3000&scope=user:read:email&force_verify=true`}
+          href={`https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=dejhj47nm5nunxeavvfvhphi7us45o&redirect_uri=${redirectURL}&scope=user:read:email&force_verify=true`}
         >
           <Button
             variant="contained"
