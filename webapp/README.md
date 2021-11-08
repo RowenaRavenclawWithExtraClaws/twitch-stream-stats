@@ -18,6 +18,8 @@ Others: SCSS, Material UI
 
 ## Architecture
 
+![arch](https://github.com/RowenaRavenclawWithExtraClaws/twitch-stream-stats/blob/main/webapp/frontend-arch.png)
+
 ## How to improve
 
 ### Add testing
