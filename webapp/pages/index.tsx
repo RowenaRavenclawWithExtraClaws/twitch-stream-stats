@@ -5,7 +5,6 @@ import { useRouter } from "next/dist/client/router";
 import { Grid, Container, Chip } from "@mui/material";
 import CustomFooter from "../components/customFooter";
 import CustomHeader from "../components/customHeader";
-import styles from "../styles/Home.module.css";
 import StatsCard from "../components/statsCard";
 import { selectStreamsPerGame } from "../redux/streamsPerGameSlice";
 import { selectViewersPerGame } from "../redux/viewersPerGameSlice";
@@ -87,12 +86,12 @@ const Home: NextPage = () => {
   if (fetching) return <FetchIndicator />;
 
   return (
-    <Container maxWidth="xl" className={styles.container}>
+    <Container maxWidth="xl" className="container">
       <CustomHeader title="Stream Stats" />
-      <main className={styles.main}>
+      <main className="main">
         <div style={{ width: "100%" }}>
           <div style={{ display: "inline-block" }}>
-            <h1 className={styles.title}>Stream Insights</h1>
+            <h1 className="title">Stream Insights</h1>
             <p>Median of viewers (~ 1k streams) </p>
             <Chip label={medianViewers.data} color="success"></Chip>
           </div>

@@ -1,8 +1,6 @@
-import styles from "../styles/Home.module.css";
-
 const CustomFooter = () => {
   return (
-    <footer className={styles.footer}>
+    <footer className="footer">
       <a
         href="https://streamlabs.com"
         target="_blank"
